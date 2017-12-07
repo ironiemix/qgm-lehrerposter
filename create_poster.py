@@ -1,6 +1,11 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+# TODO
+# Automatische Berechnung der Zeilen/Spalten
+# Verschiedene Sektionen? Refis, Sekratariat, SL?
+# Rand und Titel
+
 import os
 import glob
 import time
@@ -12,6 +17,7 @@ from subprocess import call
 # control -> Text-Dateien zur Steuerung
 posterdir="/home/frank/Downloads/kftmp/lehrerposter"
 outpic = "/home/frank/lehrerposter.jpg"
+montageopts = " -tile 9x "
 
 picsdir = posterdir + "/pics"
 controldir = posterdir + "/control"
@@ -45,10 +51,13 @@ for filename in sorted(glob.glob(controlfiles)):
 
 	mps = mps + ' -label ' + label + ' ' + picture
 
-montagecommand =  "montage " + mps + " " + outpic
+montagecommand =  "montage " + montageopts + mps + " " + outpic
+
+# schreibe shellkommando
 commandfile = open("montage.sh",'w')
 commandfile.write(montagecommand.encode('utf8'))
 commandfile.close()
+
 os.system("chmod 755 ./montage.sh")
 os.system("./montage.sh")
 os.system("rm ./montage.sh")
